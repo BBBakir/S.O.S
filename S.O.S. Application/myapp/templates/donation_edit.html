@@ -1,0 +1,78 @@
+<!-- donation_edit.html -->
+{% extends 'main.html' %} {% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div style="display: flex; width: 100%; justify-content: center">
+        <div style="display: flex; max-width: 500px; flex-direction: column; gap: 10px; font-family: sans-serif;">
+            <div style="font-size: 25px; margin-bottom: 10px; text-align: center">Edit Donation: {{ form.instance.DonationID }}</div>
+            <div style="display: flex; justify-content: space-between">
+                <div style="display: flex">Donation ID:</div>
+                <div style="display: flex">{{ form.DonationID }}</div>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+                <div style="display: flex">Donation Time:</div>
+                <div style="display: flex">{{ form.DonationTime }}</div>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+                <div style="display: flex">Donation Delivery Time:</div>
+                <div style="display: flex">{{ form.DonationDeliveryTime }}</div>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+                <div style="display: flex">Donator Donator ID:</div>
+                <div style="display: flex; justify-self: center">{{ form.Donator_DonatorID }}</div>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+                <div style="display: flex">Request Request ID:</div>
+                <div style="display: flex">{{ form.Request_RequestID }}</div>
+            </div>
+
+            <div style="border-top: 1px solid; font-size: 25px; margin-bottom: 10px; margin-top: 10px; text-align: center;">Items</div>
+
+            {% for item_form in item_forms %}
+            <div style="display: flex; justify-content: space-between">
+                <div style="display: flex">Item ID:</div>
+                <div style="display: flex">{{ item_form.Items_ItemID }}</div>
+            </div>
+            <div style="display: flex; justify-content: space-between">
+                <div style="display: flex">Quantity:</div>
+                <div style="display: flex">{{ item_form.Quantity }}</div>
+            </div>
+            {% endfor %}
+
+            <div style="border-top: 1px solid; font-size: 25px; margin-bottom: 10px; margin-top: 10px; text-align: center;">Currencies</div>
+
+            {% for currency_form in currency_forms %}
+            <div style="display: flex; justify-content: space-between">
+                <div>
+                    <div style="display: flex">Currency Type:</div>
+                    <div style="display: flex">{{ currency_form.Currency_CurrencyType }}</div>
+                </div>
+                <div>
+                    <div style="display: flex">Amount:</div>
+                    <div style="display: flex">{{ currency_form.Amount }}</div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div style="display: flex; justify-content: center">
+                <button
+                    style="
+                        box-shadow: 5px 3px 0px 2px black;
+                        background-color: #fb5deb;
+                        border-color: #000000;
+                        color: white;
+                        margin-top: 10px;
+                    "
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Update Donation
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

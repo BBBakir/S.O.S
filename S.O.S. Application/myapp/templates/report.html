@@ -1,0 +1,194 @@
+{% extends 'main.html' %} {% block content %}
+
+<div
+    style="
+        font-size: 40px;
+        margin-top: 10px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        border-bottom: 1px solid black;
+    "
+>
+    Performance Reports
+</div>
+<div
+    style="
+        font-size: 25px;
+        margin-top: 10px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    "
+>
+    Expense Report
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" style="padding: 10px">
+                    Item Category Expenses
+                </th>
+                <th scope="col" style="padding: 10px; text-align: end">
+                    {{ item_percentage }}%
+                </th>
+            </tr>
+            <tr>
+                <th scope="col" style="padding: 10px">
+                    District Logistics Expenses
+                </th>
+                <th scope="col" style="padding: 10px; text-align: end">
+                    {{ logistics_percentage }}%
+                </th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="text-center">
+    <a
+        href="{% url 'export_percentages' %}"
+        target="_blank"
+        class="btn btn-primary btn-lg mb-3"
+        style="
+            margin-top: 10px;
+            margin-bottom: 20px;
+            box-shadow: 5px 3px 0px 2px black;
+            background-color: #fb5deb;
+            border-color: #000000;
+            color: white;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: bold;
+        "
+        >Download Percentages Report</a
+    >
+</div>
+
+<div
+    style="
+        font-size: 25px;
+        margin-top: 10px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    "
+>
+    Item Category Expenses
+</div>
+{% for category, item_costs in item_category_costs.items %}
+<div style="padding-left: 10px; font-size: 20px; font-weight: bolder">
+    {{ category }}
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" style="padding: 10px">Item ID</th>
+                <th scope="col" style="padding: 10px">Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in item_costs %}
+            <tr>
+                <td style="padding: 10px">{{ item.item_id }}</td>
+                <td style="padding: 10px" class="text-right">
+                    {{ item.total_cost }}
+                </td>
+                <!-- Added 'text-right' class here -->
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" style="padding: 10px">
+                    No items found in category: {{ category }}.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% empty %}
+<p>No categories found.</p>
+{% endfor %}
+
+<div class="text-center">
+    <a
+        href="{% url 'export_item_costs' %}"
+        target="_blank"
+        class="btn btn-primary btn-lg mb-3"
+        style="
+            margin-top: 10px;
+            margin-bottom: 20px;
+            box-shadow: 5px 3px 0px 2px black;
+            background-color: #fb5deb;
+            border-color: #000000;
+            color: white;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: bold;
+        "
+        >Download Item Costs Report</a
+    >
+</div>
+
+<div
+    style="
+        font-size: 25px;
+        margin-top: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    "
+>
+    District Logistics Expenses
+</div>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" style="padding: 10px" class="text-left">
+                    District
+                </th>
+                <th scope="col" style="padding: 10px" class="text-right">
+                    Total Logistic Cost
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for district, logistics_cost in district_logistics_costs.items %}
+            <tr>
+                <td style="padding: 10px" class="text-left">{{ district }}</td>
+                <!-- Added 'text-right' class here -->
+                <td style="padding: 10px" class="text-right">
+                    {{ logistics_cost }}
+                </td>
+                <!-- Added 'text-right' class here -->
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" style="padding: 10px">
+                    No district logistics expenses found.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="text-center">
+    <a
+        href="{% url 'export_district_costs' %}"
+        target="_blank"
+        class="btn btn-primary btn-lg mb-3"
+        style="
+            margin-top: 10px;
+            margin-bottom: 20px;
+            box-shadow: 5px 3px 0px 2px black;
+            background-color: #fb5deb;
+            border-color: #000000;
+            color: white;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: bold;
+        "
+        >Download District Costs Report</a
+    >
+</div>
+{% endblock %}

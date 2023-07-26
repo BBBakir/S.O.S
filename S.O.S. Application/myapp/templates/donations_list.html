@@ -1,0 +1,115 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div style="font-size: 40px; margin-top: 10px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid black;">
+    Donation Management
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    <div style="flex: 1;">
+        <div style="font-size: 25px; margin-bottom: 10px">Add New Donation</div>
+        <form method="POST">
+            {% csrf_token %}
+            <div style="display: flex; max-width: 400px; flex-direction: column; gap: 10px;">
+                <div style="display: flex; justify-content: space-between">
+                    <div style="display: flex">Donation ID:</div>
+                    <div style="display: flex">{{ donation_form.DonationID }}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div style="display: flex">Donation Time:</div>
+                    <div style="display: flex">{{ donation_form.DonationTime }}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div style="display: flex">Donation Delivery Time:</div>
+                    <div style="display: flex">{{ donation_form.DonationDeliveryTime }}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div style="display: flex">Donator Donator ID:</div>
+                    <div style="display: flex; justify-self: center">{{ donation_form.Donator_DonatorID }}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div style="display: flex">Request Request ID:</div>
+                    <div style="display: flex">{{ donation_form.Request_RequestID }}</div>
+                </div>
+            </div>
+            <button type="submit" style="margin-top: 10px; margin-bottom: 20px; box-shadow: 5px 3px 0px 2px black; background-color: #5bf0e1; border-color: #000000; color: black; font-size: 20px; font-family: sans-serif; font-weight: bold;" class="btn btn-primary">Add Donation</button>
+        </form>
+    </div>
+
+    <div style="flex: 1;">
+        <div style="font-size: 25px; margin-bottom: 10px">Add New Donator</div>
+        <form method="POST">
+            {% csrf_token %}
+            <div style="display: flex; max-width: 400px; flex-direction: column; gap: 10px;">
+                <div style="display: flex; justify-content: space-between">
+                    <div style="display: flex">Donator ID:</div>
+                    <div style="display: flex">{{ donator_form.DonatorID }}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div style="display: flex">Name:</div>
+                    <div style="display: flex">{{ donator_form.Name }}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div style="display: flex">Surname:</div>
+                    <div style="display: flex">{{ donator_form.Surname }}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <div style="display: flex">Phone:</div>
+                    <div style="display: flex">{{ donator_form.Phone }}</div>
+                </div>
+            </div>
+            <button type="submit" style="margin-top: 10px; margin-bottom: 20px; box-shadow: 5px 3px 0px 2px black; background-color: #5bf0e1; border-color: #000000; color: black; font-size: 20px; font-family: sans-serif; font-weight: bold;" class="btn btn-primary">Add Donator</button>
+        </form>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr style="background-color: rgb(233, 233, 233)">
+            <th scope="col" style="text-align: start; vertical-align: top">Donation ID</th>
+            <th scope="col" style="text-align: start; vertical-align: top">Donation Time</th>
+            <th scope="col" style="text-align: start; vertical-align: top">Donation Delivery Time</th>
+            <th scope="col" style="text-align: start; vertical-align: top">Donator ID</th>
+            <th scope="col" style="text-align: start; vertical-align: top">Request ID</th>
+            <th scope="col" style="text-align: start; vertical-align: top">Items</th>
+            <th scope="col" style="text-align: start; vertical-align: top">Currencies</th>
+            <th scope="col" style="text-align: start; vertical-align: top">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for donation in donations %}
+        <tr>
+            <td style="font-weight: bold">{{ donation.DonationID }}</td>
+            <td>{{ donation.DonationTime }}</td>
+            <td>{{ donation.DonationDeliveryTime }}</td>
+            <td>{{ donation.Donator_DonatorID }}</td>
+            <td>{{ donation.Request_RequestID }}</td>
+            <td>
+                {% for donation_item in donation.donation_has_items_set.all %}
+                Item ID: {{ donation_item.Items_ItemID.ItemID }} <br />
+                Item Category: {{ donation_item.Items_ItemID.ItemCategory }} <br />
+                Quantity: {{ donation_item.Quantity }} <br />
+                <hr />
+                {% empty %}
+                No items donated
+                {% endfor %}
+            </td>
+            <td>
+                {% for currency in donation.donation_has_currency_set.all %}
+                {{ currency.Currency_CurrencyType }}: {{ currency.Amount }}<br />
+                <hr />
+                {% empty %}
+                No currency donated
+                {% endfor %}
+            </td>
+            <td>
+                <div style="display: flex; flex-direction: row; gap: 10px">
+                    <a style="font-size: 20px; box-shadow: 5px 3px 0px 2px black; padding: 2px; border-radius: 5px; display: flex; background-color: white; border: 1px solid #000000; color: #000000;" href="{% url 'donation_edit' pk=donation.pk %}">Edit</a>
+                    <a style="display: flex; box-shadow: 5px 3px 0px 2px black; font-size: 20px; padding: 2px; border-radius: 5px; background-color: white; border: 1px solid #000000; color: #000000;" href="{% url 'donation_delete' pk=donation.pk %}">Delete</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

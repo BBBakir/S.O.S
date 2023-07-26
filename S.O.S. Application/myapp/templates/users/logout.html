@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+{% extends 'main.html' %}
+{% load static %}
+<html>
+<head>
+    <title>{% block title %}Logged Out{% endblock %}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Logout</title>
+</head>
+{% block content %}
+<body>
+    <div class="container text-center mt-5 " , style="padding-top: 30px">
+        <h1 style="padding-top: 30px">You've successfully logged out!</h1>
+        <p style="padding-top: 30px">Would you like to log in?</p>
+        <a style="margin-top: 30px" href="{% url 'login' %}" class="btn btn-primary">Log In</a>
+    </div>
+</body>
+{% endblock %}
+</html>

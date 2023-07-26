@@ -1,0 +1,166 @@
+<!-- logistics_update.html -->
+{% extends 'main.html' %} {% block content %}
+<div
+    style="
+        font-size: 40px;
+        margin-top: 10px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        border-bottom: 1px solid black;
+    "
+>
+    Update Logistics Company Info
+</div>
+<a
+    style="
+        margin-top: 10px;
+        margin-bottom: 20px;
+        box-shadow: 5px 3px 0px 2px black;
+        background-color: #5bf0e1;
+        border-color: #000000;
+        color: black;
+
+        font-size: 20px;
+        font-family: sans-serif;
+        font-weight: bold;
+    "
+    href="{% url 'company_edit' pk=logistics.pk %}"
+    class="btn btn-primary"
+    >Edit Company Info</a
+>
+
+<div style="font-size: 25px; margin-top: 30px; margin-bottom: 10px">
+    Operational Districts:
+</div>
+<table class="table">
+    <thead>
+        <tr style="background-color: rgb(233, 233, 233)">
+            <th>District ID</th>
+            <th>District Name</th>
+            <th>Cost of Outsource</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for logistic_district in logistics_districts %}
+        <tr>
+            <td>{{ logistic_district.District_DistrictID.DistrictID }}</td>
+            <td>{{ logistic_district.District_DistrictID.DistrictName }}</td>
+            <td>{{ logistic_district.CostOfOutsource }}</td>
+            <td>
+                <form
+                    method="POST"
+                    action="{% url 'delete_district' pk=logistic_district.pk %}"
+                >
+                    {% csrf_token %}
+                    <div style="display: flex">
+                        <button
+                            style="
+                                font-size: 20px;
+                                box-shadow: 5px 3px 0px 2px black;
+                                padding: 2px;
+                                border-radius: 5px;
+                                display: flex;
+                                background-color: #ee1e1e;
+                                border: 1px solid #000000;
+                                color: white;
+                            "
+                            class="btn btn-primary"
+                            typr="submit"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div style="font-size: 25px; margin-top: 30px; margin-bottom: 10px">
+    Add a New District To Company:
+</div>
+<form method="POST">
+    {% csrf_token %}
+    <div
+        style="
+            display: flex;
+            max-width: 400px;
+            flex-direction: column;
+            gap: 10px;
+        "
+    >
+        <div style="display: flex; justify-content: space-between">
+            <div style="display: flex">District ID:</div>
+            <div style="display: flex">
+                {{ district_form.District_DistrictID }}
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+            <div style="display: flex">Cost Of Out Source:</div>
+            <div style="display: flex">{{ district_form.CostOfOutsource }}</div>
+        </div>
+    </div>
+    <button
+        style="
+            margin-top: 30px;
+            margin-bottom: 20px;
+            box-shadow: 5px 3px 0px 2px black;
+            background-color: #5bf0e1;
+            border-color: #000000;
+            color: black;
+
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: bold;
+        "
+        type="submit"
+        class="btn btn-primary"
+    >
+        Add District
+    </button>
+</form>
+<div style="font-size: 25px; margin-top: 30px; margin-bottom: 10px">
+    Requests assigned to Company:
+</div>
+<table class="table">
+    <thead>
+        <tr style="background-color: rgb(233, 233, 233)">
+            <th>Request ID</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for company_request in company_requests %}
+        <tr>
+            <td>{{ company_request.Request_RequestID.RequestID }}</td>
+            <td>
+                <form
+                    method="POST"
+                    action="{% url 'delete_request' pk=company_request.pk %}"
+                >
+                    {% csrf_token %}
+                    <button
+                        style="
+                            font-size: 20px;
+                            box-shadow: 5px 3px 0px 2px black;
+                            padding: 2px;
+                            border-radius: 5px;
+                            display: flex;
+                            background-color: #ee1e1e;
+                            border: 1px solid #000000;
+                            color: white;
+                        "
+                        class="btn btn-danger"
+                        type="submit"
+                    >
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

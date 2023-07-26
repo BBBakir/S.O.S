@@ -1,0 +1,61 @@
+{% extends 'main.html' %} {% block content %}
+<div
+    style="
+        font-size: 40px;
+        margin-top: 10px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        border-bottom: 1px solid black;
+    "
+>
+    Edit Company Information
+</div>
+<form method="POST" id="companyForm">
+    {% csrf_token %}
+    <div
+        style="
+            display: flex;
+            max-width: 400px;
+            flex-direction: column;
+            gap: 10px;
+        "
+    >
+        <div style="display: flex; justify-content: space-between">
+            <div style="display: flex">District ID:</div>
+            <div style="display: flex">{{ form.CompanyName }}</div>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+            <div style="display: flex">Cost Of Out Source:</div>
+            <div style="display: flex">{{ form.Phone }}</div>
+        </div>
+    </div>
+    <button
+        style="
+            margin-top: 10px;
+            margin-bottom: 20px;
+            box-shadow: 5px 3px 0px 2px black;
+            background-color: #5bf0e1;
+            border-color: #000000;
+            color: black;
+
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight: bold;
+        "
+        type="submit"
+        class="btn btn-primary"
+    >
+        Update
+    </button>
+</form>
+{% endblock %} {% block extra_js %}
+<script>
+    document
+        .getElementById("companyForm")
+        .addEventListener("submit", function (event) {
+            if (!confirm("Are you sure you want to update?")) {
+                event.preventDefault();
+            }
+        });
+</script>
+{% endblock %}

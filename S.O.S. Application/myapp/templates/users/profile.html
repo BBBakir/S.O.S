@@ -1,0 +1,44 @@
+{% extends 'main.html' %} {% load crispy_forms_tags %}
+<head>
+    <title>{% block title %}Profile{% endblock %}</title>
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+</head>
+{% block content %}
+<div style="display: flex; width: 100%; justify-content: center">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-3">Profile</h1>
+            <form method="POST">
+                <!-- prettier-ignore -->
+                {% csrf_token %} {{ profile_form.username|as_crispy_field }} 
+                {{ profile_form.email|as_crispy_field }} 
+                {{ profile_form.password1|as_crispy_field }}
+                {{ profile_form.password2|as_crispy_field }}
+                <div style="display: flex; justify-content: center">
+                    <button
+                        style="
+                            margin-top: 10px;
+                            margin-bottom: 20px;
+                            box-shadow: 5px 3px 0px 2px black;
+                            background-color: #fb5deb;
+                            border-color: #000000;
+                            color: white;
+
+                            font-size: 20px;
+                            font-family: sans-serif;
+                            font-weight: bold;
+                        "
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

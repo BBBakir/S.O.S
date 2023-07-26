@@ -1,0 +1,36 @@
+variables:
+  APP_NAME: django-app
+  CI_ACCESS_TOKEN: "dckr_pat_nQatgAKBnN-jMDH53K5SShYoZUk"
+  DOCKER_HOST: 54.217.148.94:2375
+
+stages:
+  - build
+  - deploy
+
+docker:image:build:
+  stage: build
+  script:
+    - echo $DOCKER_HOST
+    - echo $CI_PROJECT_NAME
+    - echo $CI_PROJECT_PATH
+    - echo $APP_NAME
+    - echo $CI_ACCESS_TOKEN
+    - docker login -u marsclick006 -p $CI_ACCESS_TOKEN
+    - docker build -t marsclick006/$CI_PROJECT_NAME:latest -f Dockerfile .
+    - docker push marsclick006/$CI_PROJECT_NAME:latest
+
+docker:deploy:
+  image: docker:latest
+  stage: deploy
+  before_script:
+    - echo $DOCKER_HOST
+    - DOCKER_HOST=$DOCKER_HOST
+    - PORT="cat Dockerfile | grep EXPOSE | cut -d' ' -f2"
+  script:
+    - docker context create dockernode --description "Node for deployment" --docker "host=tcp://$DOCKER_HOST"
+    #    - docker context use dockernode
+    #    - docker rm -f $(docker ps -a -q)
+    - docker stop $CI_PROJECT_NAME || true
+    - docker rm $CI_PROJECT_NAME || true
+    - docker run -dit -p 1009:8000 --name $CI_PROJECT_NAME marsclick006/$CI_PROJECT_NAME:latest
+  allow_failure: true
